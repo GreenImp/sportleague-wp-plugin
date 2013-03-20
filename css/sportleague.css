@@ -1,0 +1,163 @@
+@charset "UTF-8";
+/**
+ * Author: lee
+ * Date Created: 29/08/2012 10:19
+ */
+.sportLeague_matchWidget{
+	padding:20px;
+	overflow:hidden;
+}
+
+.sportLeague_matchWidget dl dt,
+.sportLeague_matchWidget h3{
+	position:absolute;
+	top:-9999em;
+	left:-9999em;
+	font-size:0;
+}
+
+.sportLeague_matchWidget dl,
+.sportLeague_matchWidget dl dd{
+	display:inline-block;
+	vertical-align:top;
+
+	*display:inline;
+	*zoom:1;
+}
+
+
+.sportLeague_matchWidget .emptyMsg{
+	margin-bottom:15px;
+}
+
+
+.sportLeague_matchWidget h2{
+	margin:0;
+	padding:0;
+}
+
+.sportLeague_matchWidget dl{
+	position:relative;
+	margin-bottom:15px;
+	width:44%;
+}
+
+.sportLeague_matchWidget dl.team1{float:left;}
+.sportLeague_matchWidget dl.team2{float:right;}
+
+.sportLeague_matchWidget dl.team1:after{
+	content:'V';
+	position:absolute;
+	top:50%;
+	left:105%;
+	margin-top:-23px;
+	width:46px;
+	height:46px;
+	font-size:1.8em;
+}
+
+.sportLeague_matchWidget .logo{
+	float:left;
+	margin-right:5%;
+	width:30%;
+	min-height:46px;
+	text-align:center;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+}
+
+.sportLeague_matchWidget .logo img{
+	margin:0 !important;
+	padding:0 !important;
+}
+
+.sportLeague_matchWidget .name{
+	width:65%;
+	font-size:0.9em;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+
+.sportLeague_matchWidget .score{
+	margin-top:1px;
+	padding:1px 4px;
+	color:#b5b5b5;
+	font-size:1.1em;
+	font-weight:bold;
+	background:#404040;
+}
+
+
+.sportLeague_matchWidget .date{
+	clear:both;
+	padding:0 0 15px;
+	font-size:1.1em;
+}
+
+.sportLeague_matchWidget .reportBtn{
+	clear:both;
+	display:inline-block;
+	padding:0 0 15px;
+	font-size:0.9em;
+}
+
+
+
+.sportLeague_fixtureResults .sportLeague_matchWidget{
+	border-bottom:1px solid #414141;
+}
+.sportLeague_fixtureResults .sportLeague_matchWidget:first-child{
+	border-top:1px solid #414141;
+}
+
+
+.sportLeague_fixtureTable table{
+	width:100%;
+	border-collapse:collapse;
+}
+
+.sportLeague_fixtureTable th,
+.sportLeague_fixtureTable td{
+	vertical-align:middle;
+}
+
+.sportLeague_fixtureTable th{
+	font-weight:bold;
+	text-align:center;
+}
+
+.sportLeague_fixtureTable td{
+	font-size:0.8em;
+	text-align:left;
+}
+
+.sportLeague_fixtureTable th.datetime{text-align:left;}
+
+.sportLeague_fixtureTable th.tournament{text-align:left;}
+
+.sportLeague_fixtureTable th.score{
+	text-indent:-9999em;
+}
+
+.sportLeague_fixtureTable td.score{
+	text-align:center;
+}
+
+.sportLeague_fixtureTable td.team{}
+
+.sportLeague_fixtureTable th.team.home,
+.sportLeague_fixtureTable td.team.home{
+	text-align:right;
+}
+.sportLeague_fixtureTable th.team.away,
+.sportLeague_fixtureTable td.team.away{
+	text-align:left;
+}
+
+.sportLeague_fixtureTable td.datetime .date{display:block;}
+
+.sportLeague_fixtureTable td.score .home{}
+.sportLeague_fixtureTable td.score .away{}
+
+.sportLeague_fixtureTable td.info{text-align:center;}

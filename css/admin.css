@@ -1,0 +1,69 @@
+/**
+ * Author: lee
+ * Date Created: 01/10/2012 12:12
+ */
+
+#sportleague select option.highlight{
+	margin:0;
+	border-radius:0;
+}
+
+#sportleague .form-table .highlight{
+	margin:0;
+	padding:3px;
+}
+
+
+#sportleague .feedInfo{
+	display:inline-block;
+	padding:10px;
+	background:#fffce5;
+	border:1px solid #e5dd82;
+	border-radius:6px;
+}
+
+#sportleague .feedInfo dl{
+	margin:0;
+	line-height:normal;
+}
+
+#sportleague .feedInfo dl dt{
+	margin-top:10px;
+	color:#666;
+}
+
+#sportleague .feedInfo dl dd{
+	margin:5px 0 10px 5px;
+}
+
+.feedLink{
+	display:inline-block;
+	vertical-align:bottom;
+	width:16px;
+	height:16px;
+	text-indent:-9999em;
+	background:url('../images/icn-feeds.png') 100% 100% no-repeat;
+}
+
+.feedLink.rss{
+	background-position:0 0;
+}
+
+.feedLink.json{
+	background-position:-16px 0;
+}
+
+.feedLink:hover,
+.feedLink:focus{
+	opacity:0.8;
+}
+
+
+#sportleague select option.blank{
+	color:#888;
+	font-weight:bold;
+}
+
+#sportleague select option.featured{
+	font-weight:bold;
+}
