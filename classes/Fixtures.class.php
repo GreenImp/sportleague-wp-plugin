@@ -369,10 +369,10 @@ class Fixtures{
 	}
 
 	/**
-	 * Returns a list of closed fixtures
+	 * Returns a list of open fixtures
 	 * for the given Season (or the latest
 	 * season, if none is specified).
-	 * If no closed fixtures are found an
+	 * If no open fixtures are found an
 	 * empty array is returned.
 	 *
 	 * @param int $seasonID
@@ -395,14 +395,18 @@ class Fixtures{
 		$teamID = $this->db->escape(Teams::getInstance()->getID($teamID));
 
 		$query = "SELECT
-						fixtures.*
+						fixtures.*,
+						DATE(fixtures.timestamp_end),
+						CURDATE()
 					FROM
 						" . SPORT_LEAGUE_DB_PREFIX . "fixtures AS fixtures,
 						" . SPORT_LEAGUE_DB_PREFIX . "seasons AS seasons
-					WHERE
-						fixtures.timestamp_start > NOW() AND
-						fixtures.timestamp_end > NOW() AND
-						fixtures.closed = '0'
+					WHERE " .
+						// get where start datetime is greater than or equal to now
+						"fixtures.timestamp_start >= NOW() AND " .
+						// get where end date if greater than or equal to current date (don't check time as it sometimes equals 0)
+						"DATE(fixtures.timestamp_end) >= CURDATE() AND " .
+						"fixtures.closed = '0'
 						" . (
 						($teamID > 0) ?
 							"AND (fixtures.team_1_id = " . $teamID . " OR fixtures.team_2_id = " . $teamID . ")"
@@ -549,7 +553,7 @@ class Fixtures{
 	 * @return mixed
 	 */
 	public function getLatestSeason(){
-		$query = "SELECT
+		/*$query = "SELECT
 						*
 					FROM
 						" . SPORT_LEAGUE_DB_PREFIX . "seasons
@@ -559,8 +563,36 @@ class Fixtures{
 					ORDER BY
 						date_start DESC,
 						date_end DESC
+					LIMIT 1";*/
+
+		$query = "SELECT
+						*
+					FROM
+						" . SPORT_LEAGUE_DB_PREFIX . "seasons
+					WHERE
+						active = '1'
+						date_start < NOW() AND
+						date_end >= NOW() AND
+					ORDER BY
+						date_start DESC,
+						date_end DESC
 					LIMIT 1";
-		return $this->db->get_row($query);
+		if(!is_null($row = $this->db->get_row($query))){
+			return $row;
+		}else{
+			// no active season - get the closest season to the current date
+			$query = "SELECT
+							*
+						FROM
+							" . SPORT_LEAGUE_DB_PREFIX . "seasons
+						WHERE
+							active = '1'
+						ORDER BY
+							ABS(DATEDIFF(date_start, NOW())) ASC,
+							ABS(DATEDIFF(date_end, NOW())) ASC
+						LIMIT 1";
+			return $this->db->get_row($query);
+		}
 	}
 
 	/**

@@ -89,7 +89,7 @@ class SportFeeds extends RSSFeed{
 				$items[] = array(
 					'title' => $team1->getName() . ' v ' . $team2->getName() . ' (' . date('D, j M Y', strtotime($fixture->getDate())) . ')',
 					'url' => sprintf(SPORT_LEAGUE_REPORT_URL, $fixture->getID()),
-					'date' => date('Y-m-d H:i:s', strtotime($fixture->getStartDateTime())),
+					'date' => $this->getDate($fixture->getStartDateTime()),
 					'description' =>
 						(($font != '') ? '<div style="font-family:' . $font . ';">' : '') .
 							($appendLogo ? '<img src="' . $logo . '" alt="">' : '') .
@@ -142,7 +142,7 @@ class SportFeeds extends RSSFeed{
 				$items[] = array(
 					'title' => $team1->getName() . ' ' . $fixture->getTeamScore(1) . ', ' . $team2->getName() . ' ' .$fixture->getTeamScore(2),
 					'url' => sprintf(SPORT_LEAGUE_REPORT_URL, $fixture->getID()),
-					'date' => date('Y-m-d H:i:s', strtotime($fixture->getStartDateTime())),
+					'date' => $this->getDate($fixture->getStartDateTime()),
 					'description' =>
 						(($font != '') ? '<div style="font-family:' . $font . ';">' : '') .
 							($appendLogo ? '<img src="' . $logo . '" alt="">' : '') .

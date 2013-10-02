@@ -11,6 +11,19 @@ class RSSFeed{
 	protected $encoding = 'UTF-8';	// current encoding type for the feed
 	protected $output = '';			// current stored XML output
 
+	protected function getDate($dateStr, $format = 'r'){
+		$tz = get_option('timezone_string');
+		if($tz){
+			date_default_timezone_set($tz);
+		}
+
+		$dateStr = date($format, (strtolower($dateStr) == 'now') ? time() : strtotime($dateStr));
+
+		date_default_timezone_set('UTC');
+
+		return $dateStr;
+	}
+
 	/**
 	 * Outputs the HTTP header
 	 */
@@ -37,12 +50,12 @@ class RSSFeed{
 		$this->output = '';
 
 		// calculate the last modified date
-		$buildDate = 0;
+		$buildDate = '';
 		foreach($items as $item){
-			$thisDate = strtotime($item['date']);
-			$buildDate = ($thisDate > $buildDate) ? $thisDate : $buildDate;
+			$thisDate = $this->getDate($item['date']);
+			$buildDate = (strtotime($thisDate) > strtotime($buildDate)) ? $thisDate : $buildDate;
 		}
-		$buildDate = ($buildDate <= 0) ? time() : $buildDate;
+		$buildDate = ($buildDate == '') ? $this->getDate('now') : $buildDate;
 
 
 		// start building the XML
@@ -56,7 +69,7 @@ class RSSFeed{
 							self::TAB . self::TAB . '<title>' . $title . '</title>' . self::NEWLINE .
 							self::TAB . self::TAB . '<link>' . $url . '</link>' . self::NEWLINE .
 							self::TAB . self::TAB . '<description>' . $description . '</description>' . self::NEWLINE .
-							self::TAB . self::TAB . '<lastBuildDate>' . date('r', $buildDate) . '</lastBuildDate>' . self::NEWLINE .
+							self::TAB . self::TAB . '<lastBuildDate>' . $buildDate . '</lastBuildDate>' . self::NEWLINE .
 							self::TAB . self::TAB . '<language>en-gb</language>' . self::NEWLINE;
 
 		// now loop through each item and output the info
@@ -68,7 +81,7 @@ class RSSFeed{
 								self::TAB . self::TAB . self::TAB . '<title>' . $item['title'] . '</title>' . self::NEWLINE .
 								self::TAB . self::TAB . self::TAB . '<link>' . $item['url'] . '</link>' . self::NEWLINE .
 								self::TAB . self::TAB . self::TAB . '<guid>' . $item['url'] . '</guid>' . self::NEWLINE .
-								self::TAB . self::TAB . self::TAB . '<pubDate>' . date('r', strtotime($item['date'])) . '</pubDate>' . self::NEWLINE .
+								self::TAB . self::TAB . self::TAB . '<pubDate>' . $this->getDate($item['date']) . '</pubDate>' . self::NEWLINE .
 								self::TAB . self::TAB . self::TAB . '<description><![CDATA[' . $item['description'] . ']]></description>' . self::NEWLINE;
 				// check if the item has a thumbnail associated with it
 				if(isset($item['thumb']) && ($item['thumb'] != '')){
