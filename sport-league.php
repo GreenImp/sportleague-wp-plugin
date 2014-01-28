@@ -541,7 +541,7 @@ function sportLeagueFixtureTable($season = -1, $team = -1){
 				<td class="score">
 					'. ($fixture->isOpen() ? 'v' : '<span class="home">' . $fixture->getTeamScore(1) . '</span>-<span class="away">' . $fixture->getTeamScore(2) . '</span>') . '
 				</td>
-				<td class="team away">' . (is_null($team1) ? '<span title="To Be Confirmed">TBC</span>' : $team2->getName()) . '</td>
+				<td class="team away">' . (is_null($team2) ? '<span title="To Be Confirmed">TBC</span>' : $team2->getName()) . '</td>
 				<td class="tournament">' . $fixture->getTournament()->name . (($fixture->getRound() != '') ? ' ' . $fixture->getRound() : '') . '</td>
 				<td class="info">' .
 					(($report != '') ? '<a href="' . sprintf(SPORT_LEAGUE_REPORT_URL, $fixture->getID()) . '/' . ($fixture->isOpen() ? 'pre' : 'post') . '" title="view match report" class="reportBtn">Info</a>' : '') .
