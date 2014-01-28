@@ -5,6 +5,9 @@
  */
 
 class SportFeeds extends RSSFeed{
+	const FEED_PAGE_PRE		= 0;
+	const FEED_PAGE_POST	= 1;
+
 	/**
 	 * Outputs the HTTP header
 	 */
@@ -70,8 +73,9 @@ class SportFeeds extends RSSFeed{
 		$title = (($team != '') ? $team . ((substr($team, strlen($team)-1) == 's') ? "'" : "'s") . ' ' : '') . 'Fixtures';
 		$description = 'The latest fixtures' . (($team != '') ? ' from ' . $team : '') . '.';
 
-		// get the fixtures
+		// holds a list of fixtures
 		$items = array();
+		// get the fixtures
 		if(count($fixtures = Fixtures::getInstance()->getOpenFixtures($seasonID, $teamID, $limit)) > 0){
 			// loop through each fixture and grab the relevant information
 
@@ -99,6 +103,16 @@ class SportFeeds extends RSSFeed{
 				);
 			}
 		}
+
+
+		// add the feed pre/post pages
+		if(is_array($prePage = $this->getFeedPage(self::FEED_PAGE_PRE))){
+			array_unshift($items, $prePage);
+		}
+		if(is_array($postPage = $this->getFeedPage(self::FEED_PAGE_POST))){
+			$items[] = $postPage;
+		}
+
 
 		return $this->build($title, get_bloginfo('url'), $description, $items);
 	}
@@ -153,6 +167,16 @@ class SportFeeds extends RSSFeed{
 			}
 		}
 
+
+		// add the feed pre/post pages
+		if(is_array($prePage = $this->getFeedPage(self::FEED_PAGE_PRE))){
+			array_unshift($items, $prePage);
+		}
+		if(is_array($postPage = $this->getFeedPage(self::FEED_PAGE_POST))){
+			$items[] = $postPage;
+		}
+
+
 		return $this->build($title, get_bloginfo('url'), $description, $items);
 	}
 
@@ -178,6 +202,33 @@ class SportFeeds extends RSSFeed{
 		}
 
 		exit;
+	}
+
+
+	/**
+	 * Returns a Wordpress post/page as a feed item
+	 *
+	 * @param $pos
+	 * @return array|null
+	 */
+	public function getFeedPage($pos){
+		$postID = get_option(SPORT_LEAGUE_VAR_NAME . '_feeds_page_' . (($pos === self::FEED_PAGE_PRE) ? 'pre' : 'post'));
+		if(is_numeric($postID) && is_object($post = get_post($postID))){
+			$font = get_option(SPORT_LEAGUE_VAR_NAME . '_feeds_font', '');
+			
+			return array(
+				'title' => $post->post_title,
+				'url' => get_permalink($post->ID),
+				'date' => $this->getDate($post->post_date_gmt),
+				'description' =>
+					(($font != '') ? '<div style="font-family:' . $font . ';">' : '') .
+						str_replace(']]>', ']]&gt;', apply_filters('the_content', $post->post_content)) .
+					(($font != '') ? '</div>' : ''),
+				'thumb' => ''
+			);
+		}
+
+		return null;
 	}
 }
 ?>

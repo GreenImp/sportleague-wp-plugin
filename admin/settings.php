@@ -39,6 +39,7 @@ if(isset($_POST['submit'])){
 			'label'	=> 'Logos in Feed',
 			'rules'	=> ''
 		),
+
 		array(
 			'field'	=> 'feedsRSS',
 			'label'	=> 'Feeds - RSS',
@@ -48,6 +49,23 @@ if(isset($_POST['submit'])){
 			'field'	=> 'feedsJSON',
 			'label'	=> 'Feeds - RSS',
 			'rules'	=> ''
+		),
+
+		array(
+			'field'	=> 'feedsLimit',
+			'label'	=> 'Feed Items Limit',
+			'rules'	=> 'trim|is_natural'
+		),
+
+		array(
+			'field'	=> 'feedsPagePre',
+			'label'	=> 'Feeds Page Before',
+			'rules'	=> 'trim|is_natural_no_zero'
+		),
+		array(
+			'field'	=> 'feedsPagePost',
+			'label'	=> 'Feeds Page After',
+			'rules'	=> 'trim|is_natural_no_zero'
 		)
 	);
 
@@ -85,6 +103,11 @@ if(isset($_POST['submit'])){
 		update_option(SPORT_LEAGUE_VAR_NAME . '_feeds_rss', isset($_POST['feedsRSS']));
 		// json
 		update_option(SPORT_LEAGUE_VAR_NAME . '_feeds_json', isset($_POST['feedsJSON']));
+
+		// Feed pages pre
+		update_option(SPORT_LEAGUE_VAR_NAME . '_feeds_page_pre', isset($_POST['feedsPagePre']) ? $_POST['feedsPagePre'] : '');
+		// Feed pages post
+		update_option(SPORT_LEAGUE_VAR_NAME . '_feeds_page_post', isset($_POST['feedsPagePost']) ? $_POST['feedsPagePost'] : '');
 
 		// update successful
 		Message::add('updated', 'The settings have been updated');
@@ -267,6 +290,27 @@ Message::show();
 							</dd>
 						</dl>
 					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<th>Feed Pages</th>
+
+				<td>
+					<div>
+						<label for="settingFeedsPagesPre">Page before listing</label>
+						<input type="number" name="feedsPagePre" value="<?php echo get_option(SPORT_LEAGUE_VAR_NAME . '_feeds_page_pre', ''); ?>" min="1" id="settingFeedsPagesPre">
+					</div>
+
+					<div>
+						<label for="settingFeedsPagesPost">Page before listing</label>
+						<input type="number" name="feedsPagePost" value="<?php echo get_option(SPORT_LEAGUE_VAR_NAME . '_feeds_page_post', ''); ?>" min="1" id="settingFeedsPagesPost">
+					</div>
+
+					<p class="description">
+						To insert Wordpress post content as list items, in the feeds, enter the post IDs into these fields.<br>
+						You can add page content before and/or after the feed list.
+					</p>
 				</td>
 			</tr>
 		</table>
