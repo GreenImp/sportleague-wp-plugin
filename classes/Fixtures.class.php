@@ -662,13 +662,14 @@ class Fixtures{
 	 * @param int $team2Score
 	 * @param string $timeStart
 	 * @param string $timeEnd
+	 * @param bool $tbc
 	 * @param string $ticketURL
 	 * @param string $preReport
 	 * @param string $postReport
 	 * @param bool $closed
 	 * @return int
 	 */
-	public function addFixture($seasonID, $tournamentID, $round, $team1ID, $team2ID, $team1Score, $team2Score, $timeStart, $timeEnd, $ticketURL = '', $preReport = '', $postReport = '', $closed = false){
+	public function addFixture($seasonID, $tournamentID, $round, $team1ID, $team2ID, $team1Score, $team2Score, $timeStart, $timeEnd, $tbc, $ticketURL = '', $preReport = '', $postReport = '', $closed = false){
 		if(
 			is_numeric($seasonID) && ($seasonID > 0) &&
 			is_numeric($tournamentID) && ($tournamentID > 0) &&
@@ -690,6 +691,7 @@ class Fixtures{
 				'team_2_score' => $team2Score,
 				'timestamp_start' => $timeStart,
 				'timestamp_end' => $timeEnd,
+				'tbc' => ($tbc == true) ? '1' : '0',
 				'ticket_url' => $ticketURL,
 				'match_report_pre' => $preReport,
 				'match_report_post' => $postReport,
@@ -718,13 +720,14 @@ class Fixtures{
 	 * @param int $team2Score
 	 * @param string $timeStart
 	 * @param string $timeEnd
+	 * @param bool $tbc
 	 * @param string $ticketURL
 	 * @param string $preReport
 	 * @param string $postReport
 	 * @param bool $closed
 	 * @return bool
 	 */
-	public function updateFixture($fixtureID, $seasonID, $tournamentID, $round, $team1ID, $team2ID, $team1Score, $team2Score, $timeStart, $timeEnd, $ticketURL = '', $preReport = '', $postReport = '', $closed = false){
+	public function updateFixture($fixtureID, $seasonID, $tournamentID, $round, $team1ID, $team2ID, $team1Score, $team2Score, $timeStart, $timeEnd, $tbc, $ticketURL = '', $preReport = '', $postReport = '', $closed = false){
 		if(
 			is_numeric($fixtureID) && ($fixtureID > 0) &&
 			is_numeric($seasonID) && ($seasonID > 0) &&
@@ -747,6 +750,7 @@ class Fixtures{
 				'team_2_score' => $team2Score,
 				'timestamp_start' => $timeStart,
 				'timestamp_end' => $timeEnd,
+				'tbc' => ($tbc == true) ? '1' : '0',
 				'ticket_url' => $ticketURL,
 				'match_report_pre' => $preReport,
 				'match_report_post' => $postReport,

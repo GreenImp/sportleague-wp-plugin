@@ -151,6 +151,10 @@ $fixtures = $fixtureClass->getFixtures($seasonID, $teamID, $tournamentID, true, 
 								}else{
 									echo $hours . (($minutes > 0) ? ':' . $minutes : '') . $amPm;
 								}
+
+								if($fixture->isTBC()){
+									echo ' (TBC)';
+								}
 							?></span>
 						</a>
 					</strong>

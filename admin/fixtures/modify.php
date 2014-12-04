@@ -173,6 +173,7 @@ if(isset($_POST['save'])){
 					(isset($_POST['fixtureScoreAway']) && is_numeric($_POST['fixtureScoreAway'])) ? $_POST['fixtureScoreAway'] : 0,
 					$_POST['fixtureDate'] . ' ' . $_POST['fixtureTimeStart'],
 					$_POST['fixtureDate'] . ' ' . $_POST['fixtureTimeEnd'],
+					isset($_POST['fixtureTBC']) && ($_POST['fixtureTBC'] == true),
 					isset($_POST['fixtureTicketsURL']) ? $_POST['fixtureTicketsURL'] : '',
 					$reportPre,
 					$reportPost,
@@ -191,6 +192,7 @@ if(isset($_POST['save'])){
 					(isset($_POST['fixtureScoreAway']) && is_numeric($_POST['fixtureScoreAway'])) ? $_POST['fixtureScoreAway'] : 0,
 					$_POST['fixtureDate'] . ' ' . $_POST['fixtureTimeStart'],
 					$_POST['fixtureDate'] . ' ' . $_POST['fixtureTimeEnd'],
+					isset($_POST['fixtureTBC']) && ($_POST['fixtureTBC'] == true),
 					isset($_POST['fixtureTicketsURL']) ? $_POST['fixtureTicketsURL'] : '',
 					$reportPre,
 					$reportPost,
@@ -287,6 +289,20 @@ Message::show();
 								}
 								?>
 							</select>
+						</dd>
+					</dl>
+
+					<dl class="inside">
+						<dt><label for="fixtureTBC">TBC</label></dt>
+						<dd>
+							<input type="checkbox" name="fixtureTBC" value="1" id="fixtureTBC"<?php
+							if(
+								(isset($_POST['fixtureTBC']) && ($_POST['fixtureClose'] == true)) ||
+								(!$isAdd && $fixture->isTBC())
+							){
+								echo ' checked';
+							}
+							?>>
 						</dd>
 					</dl>
 				</div>

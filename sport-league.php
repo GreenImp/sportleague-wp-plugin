@@ -14,7 +14,7 @@ Version: 0.1
 Author URI:
 */
 global $wpdb;
-define('SPORT_LEAGUE_VERSION', '0.1');
+define('SPORT_LEAGUE_VERSION', '0.2');
 define('SPORT_LEAGUE_NAME', 'Sport League');
 define('SPORT_LEAGUE_DIR', dirname(__FILE__) . '/');
 define('SPORT_LEAGUE_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -163,6 +163,7 @@ function sportLeagueInstall(){
 		team_2_id int(10) unsigned NOT NULL,
 		timestamp_start datetime NOT NULL,
 		timestamp_end datetime NOT NULL,
+		tbc tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'flags whether the fixture times are TBC or not',
 		team_1_score tinyint(2) unsigned NOT NULL DEFAULT '0',
 		team_2_score tinyint(2) unsigned NOT NULL DEFAULT '0',
 		match_report_pre longtext NOT NULL,
@@ -201,8 +202,33 @@ function sportLeagueInstall(){
 	$wp_rewrite->flush_rules();
 }
 
+function sportLeagueUpdate(){
+	// update the version number
+	add_option(SPORT_LEAGUE_VAR_NAME . '_version', SPORT_LEAGUE_VERSION);
+
+	// update the fixtures table
+	$fixturesTable = SPORT_LEAGUE_DB_PREFIX . 'fixtures';
+	$sql = "ALTER TABLE " . $fixturesTable . "
+		ADD
+			tbc tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'flags whether the fixture times are TBC or not'
+	);";
+	dbDelta($sql);
+}
+
+function sportLeagueActivate(){
+	$version	= get_option(SPORT_LEAGUE_VAR_NAME . '_version');
+
+	if(!!$version){
+		// plugin not currently installed
+		sportLeagueInstall();
+	}elseif(version_compare($version, SPORT_LEAGUE_VERSION, '<')){
+		// version requires update
+		sportLeagueUpdate();
+	}
+}
+
 // set up the activation hook to run the installation function
-register_activation_hook(__FILE__, 'sportLeagueInstall');
+register_activation_hook(__FILE__, 'sportLeagueActivate');
 
 
 function sportLeagueUninstall(){
@@ -362,7 +388,7 @@ function sportLeagueWidgetBox($fixture, $type = '', $location = -1, $title = '',
 					$kickOff = $hours . (($minutes > 0) ? ':' . $minutes : '') . $amPm;
 				}
 
-				$output .= '<div class="date">' . date('l jS F', $dateTime) . ' - ' . $kickOff . '</div>';
+				$output .= '<div class="date">' . date('l jS F', $dateTime) . ' - ' . $kickOff . ($fixture->isTBC() ? ' (TBC)' : '') . '</div>';
 
 				if(($report = $fixture->getPreMatchReport()) != ''){
 					$output .= '<a href="' . sprintf(SPORT_LEAGUE_REPORT_URL, $fixture->getID()) . '" title="view pre-match report" class="reportBtn">View pre-match information</a>';
@@ -535,7 +561,7 @@ function sportLeagueFixtureTable($season = -1, $team = -1){
 			$output .= '<tr class="' . (($i&1) ? 'odd' : 'even') . '">
 				<td class="datetime">
 					<span class="date">' . date('l jS F', $time) . '</span>
-					<span class="time">KO ' . $KO . '</span>
+					<span class="time">KO ' . $KO . ($fixture->isTBC() ? ' (TBC)' : '') . '</span>
 				</td>
 				<td class="team home">' . (is_null($team1) ? '<span title="To Be Confirmed">TBC</span>' : $team1->getName()) . '</td>
 				<td class="score">
@@ -876,4 +902,3 @@ function sportLeagueHTTPStatus($code, $exit = false){
 		exit;
 	}
 }
-?>

@@ -97,6 +97,7 @@ class SportFeeds extends RSSFeed{
 					'description' =>
 						(($font != '') ? '<div style="font-family:' . $font . ';">' : '') .
 							($appendLogo ? '<img src="' . $logo . '" alt="">' : '') .
+							($fixture->isTBC() ? '<p>Fixture date/time is TBC</p>' : '') .
 							str_replace(']]>', ']]&gt;', apply_filters('the_content', $fixture->getPreMatchReport())) .
 						(($font != '') ? '</div>' : ''),
 					'thumb' => $logo

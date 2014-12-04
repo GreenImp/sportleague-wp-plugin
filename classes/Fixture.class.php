@@ -5,22 +5,23 @@
  */
 
 class Fixture{
-	private $id = 0;
-	private $season_id = 0;
-	private $tournament_id = 0;
-	private $round = '';
-	private $team_1_id = 0;
-	private $team_2_id = 0;
-	private $team_1_score = 0;
-	private $team_2_score = 0;
-	private $timestamp_start = '';
-	private $timestamp_end = '';
-	private $match_report_pre = '';
-	private $match_report_post = '';
-	private $ticket_url = '';
-	private $closed = false;
+	private $id					= 0;
+	private $season_id			= 0;
+	private $tournament_id		= 0;
+	private $round				= '';
+	private $team_1_id			= 0;
+	private $team_2_id			= 0;
+	private $team_1_score		= 0;
+	private $team_2_score		= 0;
+	private $timestamp_start	= '';
+	private $timestamp_end		= '';
+	private $tbc				= false;
+	private $match_report_pre	= '';
+	private $match_report_post	= '';
+	private $ticket_url			= '';
+	private $closed				= false;
 
-	private $teams = array();	// contains a list of the teams competing in the fixture
+	private $teams				= array();	// contains a list of the teams competing in the fixture
 
 	public function __construct(array $attributes){
 		foreach($attributes as $key => $val){
@@ -164,6 +165,15 @@ class Fixture{
 	 */
 	public function getEndDateTime(){
 		return $this->getDate() . ' ' . $this->getEndTime();
+	}
+
+	/**
+	 * Returns whether the fixture time/date is To Be Confirmed
+	 *
+	 * @return bool
+	 */
+	public function isTBC(){
+		return !!$this->tbc;
 	}
 
 	/**
