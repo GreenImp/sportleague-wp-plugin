@@ -1,0 +1,1 @@
+This is a Wordpress Plugin which adds the functionality of displaying sport fixture entries, with stats, pre/post match reports, RSS feeds etc.
